@@ -65,7 +65,7 @@ if(ISDEV) {
  * @desc LOAD ROUTES
  */
 
-const { apiRouter } = require('./server/_routes/index');
+const { apiRouter } = require('./_server/routes/index');
 
 app.use('/api', apiRouter);
 
