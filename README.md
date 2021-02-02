@@ -1,7 +1,7 @@
 # Project manager
-## v1
+## v2
 
-set up db
+add user model
 
 ## base packages
 npm i cookie-parser express http-errors mongoose
