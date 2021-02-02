@@ -2,21 +2,30 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-//const logger = require('morgan');
+const connectDB = require('./config/db');
+const { ISDEV } = require('./config/constants');
 
 /**
  * @desc INITIALIZE APP
  */
 const app = express();
+connectDB();
 
 /**
  * @desc MIDDLEWARE
  */
-//app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+/**
+ * @desc DEV MIDDLEWARE
+ */
+if(ISDEV) {
+  const logger = require('morgan');
+  app.use(logger('dev'));
+}
 
 /**
  * @desc ERROR HANDLING
