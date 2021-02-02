@@ -64,29 +64,10 @@ if(ISDEV) {
 /**
  * @desc LOAD ROUTES
  */
-app.get('/api/users', function (req, res) {
-  res.send('GET: users');
-});
 
-app.post('/api/users', function (req, res) {
-  res.send('POST: create user');
-});
+const { apiRouter } = require('./server/_routes/index');
 
-app.delete('/api/users', function (req, res) {
-  res.send('DELETE: all users');
-});
-
-app.get('/api/users/:userID', function (req, res) {
-  res.send('GET: one user');
-});
-
-app.put('/api/users/:userID', function (req, res) {
-  res.send('PUT: update one user');
-});
-
-app.delete('/api/users/:userID', function (req, res) {
-  res.send('DELETE: delete one user');
-});
+app.use('/api', apiRouter);
 
 
 /**
@@ -104,9 +85,9 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // send error response
   res.status(err.status || 500);
-  res.render('error');
+  res.send(`status: ${err.status}\n error: ${err.name}\n message: ${err.message}`);
 });
 
 module.exports = app;
