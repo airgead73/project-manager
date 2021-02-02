@@ -3,7 +3,17 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
-const { ISDEV } = require('./config/constants');
+const cors = require('cors');
+const helmet = require('helmet');
+const policies = require('./config/csp');
+const hpp = require('hpp');
+const mongoSanitize = require('express-mongo-sanitize');
+const rateLimit = require('express-rate-limit');
+const { RATE_LIMIT } = require('./config/constants');
+const session = require('express-session');
+const { ISDEV, SESSION_EXP, SESSION_SECRET } = require('./config/constants');
+const SessionMemory = require('memorystore')(session);
+const xss = require('xss-clean');
 
 /**
  * @desc INITIALIZE APP
@@ -12,12 +22,36 @@ const app = express();
 connectDB();
 
 /**
+ * @desc SECURITY
+ */
+
+app.use(helmet());
+app.use(helmet.contentSecurityPolicy(policies));
+app.use(xss());
+app.use(hpp());
+app.use(cors());
+app.use(mongoSanitize());
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 10,
+  max: RATE_LIMIT
+});
+app.use(limiter);
+
+/**
  * @desc MIDDLEWARE
  */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  store: new SessionMemory({
+    checkPeriod: SESSION_EXP
+  })
+ }));
 
 /**
  * @desc DEV MIDDLEWARE
