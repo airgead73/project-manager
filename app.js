@@ -62,6 +62,34 @@ if(ISDEV) {
 }
 
 /**
+ * @desc LOAD ROUTES
+ */
+app.get('/api/users', function (req, res) {
+  res.send('GET: users');
+});
+
+app.post('/api/users', function (req, res) {
+  res.send('POST: create user');
+});
+
+app.delete('/api/users', function (req, res) {
+  res.send('DELETE: all users');
+});
+
+app.get('/api/users/:userID', function (req, res) {
+  res.send('GET: one user');
+});
+
+app.put('/api/users/:userID', function (req, res) {
+  res.send('PUT: update one user');
+});
+
+app.delete('/api/users/:userID', function (req, res) {
+  res.send('DELETE: delete one user');
+});
+
+
+/**
  * @desc ERROR HANDLING
  */
 
