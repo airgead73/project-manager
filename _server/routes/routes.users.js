@@ -1,6 +1,9 @@
 const { Router } = require('express');
 const usersRouter = Router();
 
+// models
+const User = require('../models/User');
+
 // actions
 const {
   create,
@@ -13,25 +16,20 @@ const {
 
 // middleware
 const checkMethod = require('../middleware/checkMethod');
+const handleQuery = require('../middleware/handleQuery');
 
 // router
 usersRouter
   .route('/')
-  .get(
-    checkMethod('GET'),
-    read
-    )
-  .post(
-    checkMethod('POST'),
-    create    
-    )
-  .delete(delete_all);
+  .get(checkMethod('GET'), handleQuery(User), read)
+  .post(checkMethod('POST'), create)
+  .delete(checkMethod('DELETE'), delete_all);
 
 usersRouter
   .route('/:userID')
-  .get(read_one)
-  .put(update)
-  .delete(delete_one);
+  .get(checkMethod('GET'), read_one)
+  .put(checkMethod('PUT'), update)
+  .delete(checkMethod('DELETE'), delete_one);
 
 module.exports = {
   usersRouter,

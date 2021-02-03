@@ -31,15 +31,15 @@ exports.create = asyncHandler(async function(req, res, next) {
 
 exports.read = asyncHandler(async function(req, res, next) {
 
-  const users = await User.find();
+  const { success, count, data } = res.results;
 
   return res
     .status(200)
     .json({
-      success: true,
-      count: users.length,
-      message: this.count > 0 ? `${this.count} found` : 'No users found',
-      data: users
+      success,
+      count,
+      message: count > 0 ? `${count} users found` : 'No users found',
+      users: count > 0 ? data : null
     });
 
 });
