@@ -9,7 +9,9 @@ const createError = require('http-errors');
  */
 
 exports.create = asyncHandler(async function(req, res, next) {
-  res.send('POST: create');
+  
+  return res.stat
+
 });
 
 /**
