@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 const helmet = require('helmet');
 const policies = require('./config/csp');
+const handleError = require('./_server/middleware/handleError');
 const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
@@ -81,13 +82,9 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // send error response
-  res.status(err.status || 500);
-  res.send(`status: ${err.status}\n error: ${err.name}\n message: ${err.message}\n code: ${err.code}`);
+  handleError(err, req, res, next)
+
 });
 
 module.exports = app;
