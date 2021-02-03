@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 const helmet = require('helmet');
 const policies = require('./config/csp');
+const handleError = require('./_server/middleware/handleError');
 const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
@@ -64,29 +65,10 @@ if(ISDEV) {
 /**
  * @desc LOAD ROUTES
  */
-app.get('/api/users', function (req, res) {
-  res.send('GET: users');
-});
 
-app.post('/api/users', function (req, res) {
-  res.send('POST: create user');
-});
+const { apiRouter } = require('./_server/routes/index');
 
-app.delete('/api/users', function (req, res) {
-  res.send('DELETE: all users');
-});
-
-app.get('/api/users/:userID', function (req, res) {
-  res.send('GET: one user');
-});
-
-app.put('/api/users/:userID', function (req, res) {
-  res.send('PUT: update one user');
-});
-
-app.delete('/api/users/:userID', function (req, res) {
-  res.send('DELETE: delete one user');
-});
+app.use('/api', apiRouter);
 
 
 /**
@@ -100,13 +82,9 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  handleError(err, req, res, next)
+
 });
 
 module.exports = app;
