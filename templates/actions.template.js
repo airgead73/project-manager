@@ -48,7 +48,7 @@ exports.update = asyncHandler(async function(req, res, next) {
  * @access  private
  */ 
 
-exports.delete = asyncHandler(async function(req, res, next) {
+exports.delete_one = asyncHandler(async function(req, res, next) {
   res.send('DELETE: delete');
 });
 

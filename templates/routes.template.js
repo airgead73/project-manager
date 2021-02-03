@@ -9,7 +9,7 @@ const {
   update,
   delete_one,
   delete_all
-} = require('../actions/actions.users');
+} = require('../_server/actions/actions.users');
 
 usersRouter
   .route('/')
