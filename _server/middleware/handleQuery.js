@@ -1,7 +1,5 @@
 const handleQuery = (model, populate) => async (req, res, next) => {
 
-  console.log('handle query')
-
   let query;
 
   const reqQuery = {...req.query};

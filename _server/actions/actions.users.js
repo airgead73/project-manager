@@ -122,8 +122,6 @@ exports.update = asyncHandler(async function(req, res, next) {
 
   }  
 
-
-
   // update user
   user = await User.findByIdAndUpdate(req.params.userID, { $set: userFields }, { new: true });
 
@@ -144,7 +142,22 @@ exports.update = asyncHandler(async function(req, res, next) {
  */ 
 
 exports.delete_one = asyncHandler(async function(req, res, next) {
-  res.send('DELETE: delete');
+
+  // find user
+  let user = await User.findById(req.params.userID);
+
+  if(!user) return next(createError(404, 'User not found'));
+
+  // delete user
+  await user.remove();
+
+  return res
+    .status(200)
+    .json({
+      success: true,
+      message: `${user.fname} ${user.lname} has been deleted`
+    });
+
 });
 
 /**
