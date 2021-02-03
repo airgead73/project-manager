@@ -1,6 +1,7 @@
 const asyncHandler = require('../middleware/handleAsync');
 const User = require('../models/User');
 const createError = require('http-errors');
+const { slugify } = require('../utils/strings');
 
 /**
  * @route   POST /
@@ -74,7 +75,66 @@ exports.read_one = asyncHandler(async function(req, res, next) {
  */ 
 
 exports.update = asyncHandler(async function(req, res, next) {
-  res.send('PUT: update');
+  
+  // find user
+  let user = await User.findById(req.params.userID);
+
+  if(!user) return next(createError(404, 'User not found'));
+
+  // build fields
+  const {
+    fname,
+    lname,
+    role,
+    email
+  } = req.body;
+
+  const userFields = {};
+
+  if(fname) userFields.fname = fname;
+  if(lname) userFields.lname = lname;
+  if(role) userFields.role = role;
+  if(email) userFields.email = email;
+
+  // update slug
+
+  if(fname || lname) {
+    console.log('update slug');
+
+    let newStr;
+
+    if(fname && lname) {  
+      console.log('new first and last names');
+      newStr = lname + ' ' + fname;
+
+    } else if(fname && !lname) {
+      console.log('new first name');
+      newStr = user.lname + ' ' + fname;
+
+    } else if(!fname && lname) {
+      console.log('new last name');
+      newStr = lname + ' ' + user.fname;
+    }  
+
+    userFields.slug = slugify(newStr);
+    
+    console.log('new string: ', newStr);
+
+  }  
+
+
+
+  // update user
+  user = await User.findByIdAndUpdate(req.params.userID, { $set: userFields }, { new: true });
+
+  return res
+    .status(200)
+    .json({
+      success: true,
+      message: `${user.fname} ${user.lname} has been updated`,
+      user
+    });
+
 }); 
 
 /**
