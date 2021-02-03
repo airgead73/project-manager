@@ -18,7 +18,7 @@ exports.create = asyncHandler(async function(req, res, next) {
     .status(200)
     .json({
       success: true,
-      message: 'User created',
+      message: `${user.fname} ${user.lname} created`,
       user
     })
 

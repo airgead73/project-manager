@@ -18,9 +18,9 @@ exports.create = asyncHandler(async function(req, res, next) {
     .status(200)
     .json({
       success: true,
-      message: 'Project created',
+      message: `${project.code} created`,
       project
-    })
+    });
 
 });
 
@@ -62,7 +62,7 @@ exports.read_one = asyncHandler(async function(req, res, next) {
     .json({ 
       success: true,
       count: 1, 
-      message: `${project.fname} ${lname} found` ,
+      message: `${project.title} found` ,
       data: project
     });    
   
@@ -83,44 +83,22 @@ exports.update = asyncHandler(async function(req, res, next) {
 
   // build fields
   const {
-    fname,
-    lname,
-    role,
-    email
+    title,
+    code,
+    edition,
+    author,
+    client,
+    desc
   } = req.body;
 
   const projectFields = {};
 
-  if(fname) projectFields.fname = fname;
-  if(lname) projectFields.lname = lname;
-  if(role) projectFields.role = role;
-  if(email) projectFields.email = email;
-
-  // update slug
-
-  if(fname || lname) {
-    console.log('update slug');
-
-    let newStr;
-
-    if(fname && lname) {  
-      console.log('new first and last names');
-      newStr = lname + ' ' + fname;
-
-    } else if(fname && !lname) {
-      console.log('new first name');
-      newStr = project.lname + ' ' + fname;
-
-    } else if(!fname && lname) {
-      console.log('new last name');
-      newStr = lname + ' ' + project.fname;
-    }  
-
-    projectFields.slug = slugify(newStr);
-    
-    console.log('new string: ', newStr);
-
-  }  
+  if(title) projectFields.title = title;
+  if(code) projectFields.code = code;
+  if(edition) projectFields.edition = edition;
+  if(author) projectFields.author = author;
+  if(client) projectFields.client = client;
+  if(desc) projectFields.desc = desc;
 
   // update project
   project = await Project.findByIdAndUpdate(req.params.projectID, { $set: projectFields }, { new: true });
@@ -129,7 +107,7 @@ exports.update = asyncHandler(async function(req, res, next) {
     .status(200)
     .json({
       success: true,
-      message: `${project.fname} ${project.lname} has been updated`,
+      message: `${project.code} has been updated`,
       project
     });
 
@@ -155,7 +133,7 @@ exports.delete_one = asyncHandler(async function(req, res, next) {
     .status(200)
     .json({
       success: true,
-      message: `${project.fname} ${project.lname} has been deleted`
+      message: `${project.code} has been deleted`
     });
 
 });
