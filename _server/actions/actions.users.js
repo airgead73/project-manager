@@ -59,8 +59,9 @@ exports.read_one = asyncHandler(async function(req, res, next) {
   return res
     .status(200)
     .json({ 
-      success: true, 
-      msg: 'GET: read one user' ,
+      success: true,
+      count: 1, 
+      message: `${user.fname} ${lname} found` ,
       data: user
     });    
   

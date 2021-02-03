@@ -1,4 +1,4 @@
-const handleQuery = (model) => async (req, res, next) => {
+const handleQuery = (model, populate) => async (req, res, next) => {
 
   console.log('handle query')
 
@@ -18,8 +18,7 @@ const handleQuery = (model) => async (req, res, next) => {
 
   let queryStr = JSON.stringify(reqQuery);
 
-  //query = model.find(JSON.parse(queryStr)).populate(populate);
-  query = model.find(JSON.parse(queryStr));
+  query = model.find(JSON.parse(queryStr)).populate(populate);  
 
   // Select Fields
   if (req.query.select) {

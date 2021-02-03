@@ -67,7 +67,7 @@ const errorGeneral = (_err, _req, _res) => {
     success: false,
     name: _err.name,
     status: _err.status || 500,
-    messages: [{ resource: err }]        
+    messages: [{ internal: 'internal server error' }]        
   }); 
 }
 
@@ -85,14 +85,7 @@ const handleError = async function(err, req, res, next) {
   } else if(code === 11000) {
     return errorDuplicate(err, req, res);
   } else {
-    return res  
-      .status(err.status || 500)
-      .json({
-        success: false,
-        name: err.name,
-        status: err.status || 500,
-        messages: [{ resource: err }]        
-      }); 
+    return errorGeneral(err, req, res);
   }
 
 }
