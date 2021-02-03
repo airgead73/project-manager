@@ -6,11 +6,16 @@ const jwt = require('jsonwebtoken');
 const { slugify } = require('../utils/strings');
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  fname: {
     type: String,
     required: [true, 'Name is required.'],
     trim: true
   },
+  lname: {
+    type: String,
+    required: [true, 'Name is required.'],
+    trim: true
+  },  
   email: {
     type: String,
     required: [true, 'Provide an appropriately formatted email.'],
@@ -26,6 +31,11 @@ const UserSchema = new mongoose.Schema({
     minlength: [5, 'Password should be between 5 and 15 characters'],
     maxlength: [100, 'Password should be between 5 and 15 characters'],
     select: false
+  },
+  role: {
+    type: String,
+    enum: ['admin', 'user'],
+    required: [true, 'Provide a role']
   },
   slug: {
     type: String
@@ -49,7 +59,8 @@ UserSchema.pre('save', async function(next) {
 // slug name
 UserSchema.pre('save', function(next) {
 
-  this.slug = slugify(this.name);
+  let str = this.lname + ' ' + this.fname;
+  this.slug = slugify(str);
 
   next();
 

@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/handleAsync');
-//const User = require('');
+const User = require('../models/User');
 const createError = require('http-errors');
 
 /**
@@ -9,8 +9,17 @@ const createError = require('http-errors');
  */
 
 exports.create = asyncHandler(async function(req, res, next) {
+
+  const user = new User(req.body);
+  await user.save();
   
-  return res.stat
+  return res
+    .status(200)
+    .json({
+      success: true,
+      message: 'User created',
+      user
+    })
 
 });
 
@@ -21,7 +30,18 @@ exports.create = asyncHandler(async function(req, res, next) {
  */
 
 exports.read = asyncHandler(async function(req, res, next) {
-  res.send('GET: read');
+
+  const users = await User.find();
+
+  return res
+    .status(200)
+    .json({
+      success: true,
+      count: users.length,
+      message: this.count > 0 ? `${this.count} found` : 'No users found',
+      data: users
+    });
+
 });
 
 /**
@@ -31,7 +51,19 @@ exports.read = asyncHandler(async function(req, res, next) {
  */ 
 
 exports.read_one = asyncHandler(async function(req, res, next) {
-  res.send('GET: read one');
+
+  const user = await User.findById(req.params.userID);
+
+  if(!user) return next(createError(404, 'User not found.'));
+
+  return res
+    .status(200)
+    .json({ 
+      success: true, 
+      msg: 'GET: read one user' ,
+      data: user
+    });    
+  
 });
 
 /**
@@ -61,5 +93,14 @@ exports.delete_one = asyncHandler(async function(req, res, next) {
  */
 
 exports.delete_all = asyncHandler(async function(req, res, next) {
-  res.send('DELETE: all');
+
+  User.collection.drop();
+
+  return res
+  .status(200)
+  .json({ 
+    success: true, 
+    message: 'User collection deleted' 
+  });  
+
 });

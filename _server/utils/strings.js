@@ -1,10 +1,11 @@
 const slugify = (str) => {
+
   let slug = str;
-  slug = slug.replace(/^\s+|\s+$/g, '');
-  slug.toLowerCase();
-  slug = slug.replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+  slug = slug.toLowerCase();
+  slug = slug.replace(' ', '-');
   
-  return slug
+  return slug;
+
 }
 
 module.exports = {

@@ -87,7 +87,7 @@ app.use(function(err, req, res, next) {
 
   // send error response
   res.status(err.status || 500);
-  res.send(`status: ${err.status}\n error: ${err.name}\n message: ${err.message}`);
+  res.send(`status: ${err.status}\n error: ${err.name}\n message: ${err.message}\n code: ${err.code}`);
 });
 
 module.exports = app;
