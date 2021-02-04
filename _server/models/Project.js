@@ -38,6 +38,14 @@ const ProjectSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
+// Casecade delete chapters when a project is deleted
+ProjectSchema.pre('remove', async function(next) {
+
+  await this.model('Chapter').deleteMany({ project: this._id });
+  next();
+
+});
+
 // Reverse populate with virtuals
 // ProjectSchema.virtual('chapters', {
 //   ref: 'Chapter',
