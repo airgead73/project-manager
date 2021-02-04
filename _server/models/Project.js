@@ -25,6 +25,9 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     maxlength: [50, 'Code should be less than 50 characters.'],
   },
+  hours_budget: {
+    type: Number
+  },
   desc: {
     type: String,
     maxlength: [500, 'Description should be less than 500 characters.'],
