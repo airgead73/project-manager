@@ -56,7 +56,7 @@ exports.read = asyncHandler(async function(req, res, next) {
 
 exports.read_one = asyncHandler(async function(req, res, next) {
 
-  const chapter = await Chapter.findById(req.params.chapterID);
+  const chapter = await Chapter.findById(req.params.chapterID).populate([{ path: 'project', select: 'title' }]);
 
   if(!chapter) return next(createError(404, 'Chapter not found.'));
 

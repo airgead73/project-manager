@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const chaptersRouter = Router();
+const chaptersRouter = Router({ mergeParams: true });
 
 // models
 const Chapter = require('../models/Chapter');
@@ -18,10 +18,13 @@ const {
 const checkMethod = require('../middleware/checkMethod');
 const handleQuery = require('../middleware/handleQuery');
 
+// populate options
+const populate = [{ path: 'project', select: 'title' }];
+
 // router
 chaptersRouter
   .route('/')
-  .get(checkMethod('GET'), handleQuery(Chapter), read)
+  .get(checkMethod('GET'), handleQuery(Chapter, populate), read)
   .post(checkMethod('POST'), create)
   .delete(checkMethod('DELETE'), delete_all);
 

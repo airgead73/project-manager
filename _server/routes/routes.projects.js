@@ -18,6 +18,11 @@ const {
 const checkMethod = require('../middleware/checkMethod');
 const handleQuery = require('../middleware/handleQuery');
 
+// nested routes
+const { chaptersRouter } = require('./routes.chapters');
+
+projectsRouter.use('/:projectID/chapters', chaptersRouter);
+
 // router
 projectsRouter
   .route('/')
