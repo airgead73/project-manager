@@ -1,7 +1,7 @@
 # Project manager
 ## v3
 
-add user model
+basic backend with authentication
 
 ## base packages
 npm i cookie-parser express http-errors mongoose
