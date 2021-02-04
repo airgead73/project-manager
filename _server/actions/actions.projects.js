@@ -1,7 +1,6 @@
 const asyncHandler = require('../middleware/handleAsync');
 const Project = require('../models/Project');
 const createError = require('http-errors');
-const { slugify } = require('../utils/strings');
 
 /**
  * @route   POST /
