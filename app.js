@@ -11,6 +11,7 @@ const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const { RATE_LIMIT } = require('./config/constants');
+const { requireAuth, checkUser } = require('./_server/middleware/handleAuth');
 const session = require('express-session');
 const { ISDEV, SESSION_EXP, SESSION_SECRET } = require('./config/constants');
 const SessionMemory = require('memorystore')(session);
@@ -61,6 +62,12 @@ if(ISDEV) {
   const logger = require('morgan');
   app.use(logger('dev'));
 }
+
+/**
+ * AUTHENTICATION
+ */
+app.use(requireAuth);
+app.get('*', checkUser);
 
 /**
  * @desc LOAD ROUTES
