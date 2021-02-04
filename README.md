@@ -1,7 +1,7 @@
 # Project manager
-## v3
+## v4
 
-basic backend with authentication
+basic react set up
 
 ## base packages
 npm i cookie-parser express http-errors mongoose
