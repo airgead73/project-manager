@@ -46,13 +46,13 @@ ProjectSchema.pre('remove', async function(next) {
 
 });
 
-// Reverse populate with virtuals
-// ProjectSchema.virtual('chapters', {
-//   ref: 'Chapter',
-//   localField: '_id',
-//   foreignField: 'project',
-//   justOne: false
-// });
+//Reverse populate with virtuals
+ProjectSchema.virtual('chapters', {
+  ref: 'Chapter',
+  localField: '_id',
+  foreignField: 'project',
+  justOne: false
+});
 
 // ProjectSchema.virtual('milestones', {
 //   ref: 'Milestone',
