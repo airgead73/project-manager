@@ -37,6 +37,8 @@ exports.login = asyncHandler(async function(req, res, next) {
 
     ISDEV && console.log(err);
 
+    console.log('auth error: ', err)
+
     return res
       .status(400)
       .json({

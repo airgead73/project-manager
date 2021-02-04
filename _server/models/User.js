@@ -72,7 +72,7 @@ UserSchema.statics.login = async function(_credentials, res) {
   const { email, password } = _credentials;
 
 
-  const user = await this.findOne({ email }).select('password');
+  const user = await this.findOne({ email }).select('password lname fname');
 
   if(user) {
 
