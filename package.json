@@ -6,7 +6,15 @@
   "scripts": {
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon  -r dotenv/config index.js",
-    "deploy": "git push heroku deploy:main"
+    "deploy": "git push heroku deploy:main",
+    "client:build": "NODE_ENV='production' webpack --config ./config/webpack.config.js",
+    "client:start": "webpack serve --config ./config/webpack.config.js"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -22,12 +30,27 @@
     "jsonwebtoken": "^8.5.1",
     "memorystore": "^1.6.4",
     "mongoose": "^5.11.14",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "validator": "^13.5.2",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.0.1",
     "debug": "^2.6.9",
+    "html-webpack-plugin": "^5.0.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "sass": "^1.32.6",
+    "sass-loader": "^10.1.1",
+    "style-loader": "^2.0.0",
+    "svg-inline-loader": "^0.8.2",
+    "webpack": "^5.20.2",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }
