@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-//const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
+const getNonce = require('../env');
+const NONCE = getNonce();
 
 module.exports = {
 
@@ -8,12 +10,21 @@ module.exports = {
   module: {
     rules: [
       { test: /\.svg$/, use: 'svg-inline-loader'},
-      { test: /\.s[ac]ss$/i, use: ['style-loader', 'css-loader', 'sass-loader']},
+      { test: /\.(scss|css)$/, use: [
+        {
+          loader: 'style-loader',
+          options: {
+            attributes: {
+              nonce: NONCE
+            }
+          }
+        }, 
+          'css-loader', 'sass-loader']},
       { test: /\.(js)$/, use: 'babel-loader'}
     ]
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../dist'),
     filename: 'index_bundle.js'
   },
   devServer: {
@@ -23,9 +34,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'client/index.html'
     }),
-    // new webpack.EnvironmentPlugin({
-    //   'NODE_ENV': 'production'
-    // })
+    new Dotenv()
   ],
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development'
 
